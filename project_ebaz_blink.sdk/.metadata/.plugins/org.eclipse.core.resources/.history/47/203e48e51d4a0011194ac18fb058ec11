@@ -1,0 +1,13 @@
+#include <stdio.h>
+#include "platform.h"
+#include "xil_printf.h"
+#include "xuartps.h" // Driver da UART do Zynq
+
+int main() {
+    init_platform();
+
+    print("--- EBAZ4205 Serial Test ---\n\r");
+
+    cleanup_platform();
+    return 0;
+}

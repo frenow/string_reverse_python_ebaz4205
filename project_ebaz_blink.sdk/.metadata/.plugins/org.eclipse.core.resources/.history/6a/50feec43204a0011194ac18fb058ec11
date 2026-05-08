@@ -1,0 +1,44 @@
+#include <stdio.h>
+#include "platform.h"
+#include "xil_printf.h"
+#include "xuartps.h"
+
+#define MAX_BUFFER_SIZE 256
+
+int main() {
+    init_platform();
+
+    char buffer[MAX_BUFFER_SIZE];
+    int index = 0;
+
+    print("\r\n--- EBAZ4205 String Echo Test ---\r\n");
+    print("Digite uma frase e aperte ENTER:\r\n");
+
+    while(1) {
+        // 1. Recebe um caractere por vez
+        char c = inbyte();
+
+        // 2. Verifica se é o fim da linha (considera \n ou \r)
+        if (c == '\n' || c == '\r') {
+            if (index > 0) { // Só processa se o buffer não estiver vazio
+                buffer[index] = '\0'; // Finaliza a string em C
+
+                //print(buffer);
+                //print("\r\n");
+
+                index = 0; // Reseta o buffer para a próxima frase
+            }
+        }
+        // 4. Armazena no buffer se houver espaço (evita overflow)
+        else if (index < MAX_BUFFER_SIZE - 1) {
+            // Opcional: eco local do caractere enquanto digita
+            //outbyte(c);
+
+            buffer[index] = c;
+            index++;
+        }
+    }
+
+    cleanup_platform();
+    return 0;
+}

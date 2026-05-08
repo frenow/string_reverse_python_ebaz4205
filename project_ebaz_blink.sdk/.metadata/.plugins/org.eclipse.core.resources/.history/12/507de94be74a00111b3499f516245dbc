@@ -1,0 +1,29 @@
+#include <stdio.h>
+#include "platform.h"
+#include "xil_printf.h"
+
+int main() {
+    init_platform();
+
+    char msg[] = "AVALIA\n"; // \n aciona a inversão na PL
+
+    // 1. Envia a string para a lógica PL
+    xil_printf("Enviando para PL: %s", msg);
+    for(int i = 0; i < 7; i++) {
+        outbyte(msg[i]);
+    }
+
+    xil_printf("Resposta da PL: ");
+
+    // 2. Lê a resposta invertida (espera 6 caracteres de volta)
+    for(int i = 0; i < 6; i++) {
+        char c = inbyte();
+        outbyte(c);
+    }
+
+    xil_printf("\n--- Teste Finalizado ---\n");
+
+    while(1);
+    cleanup_platform();
+    return 0;
+}
